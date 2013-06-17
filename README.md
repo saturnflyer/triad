@@ -14,9 +14,9 @@ map.key('Admin') #=> :admin
 map.value('Admin') #=> user
 map.descriptor('Admin') #=> 'Admin' or raise DescriptorNotPresent
 
-map.descriptor('Admin') #=> :admin
-map.key('Admin') #=> user
-map.value('Admin') #=> 'Admin' or raise ValueNotPresent
+map.descriptor(user) #=> 'Admin'
+map.key(user) #=> :admin
+map.value(user) #=> user or raise ValueNotPresent
 
 map.value(:admin) #=> user
 map.descriptor(:admin) #=> 'Admin'
