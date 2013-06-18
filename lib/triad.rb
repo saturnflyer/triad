@@ -8,6 +8,9 @@ class Triad
       "your array length must be 3"
     end
   end
+  class ValueNotPresent < StandardError; end
+  class DescriptorNotPresent < StandardError; end
+  class KeyNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
   def initialize(*args)
@@ -50,9 +53,11 @@ class Triad
   end
 
   def with_value(value)
-    @storage.select{ |key, array|
+    lookup = @storage.select{ |key, array|
       array.last == value
     }
+    raise ValueNotPresent.new if lookup.empty?
+    lookup
   end
 
   def values(arg)
@@ -73,9 +78,11 @@ class Triad
   end
 
   def with_descriptor(descriptor)
-    @storage.select{ |key, array|
+    lookup = @storage.select{ |key, array|
       array.first == descriptor
     }
+    raise DescriptorNotPresent.new if lookup.empty?
+    lookup
   end
 
   def <<(array)
@@ -96,6 +103,6 @@ class Triad
   private
 
   def fetch(key, locator=:first)
-    Array(@storage.fetch(key){ [] }.send(locator))
+    Array(@storage.fetch(key){ raise KeyNotPresent.new }.send(locator))
   end
 end

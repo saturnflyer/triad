@@ -63,6 +63,18 @@ describe Triad, '#keys' do
   it 'returns the key for the given value' do
     assert_equal [:admin], triad.keys(user)
   end
+
+  it 'errors when the given descriptor is not found' do
+    assert_raises(Triad::DescriptorNotPresent){
+      triad.keys('Invalid Descriptor')
+    }
+  end
+
+  it 'errors when the given value is not found' do
+    assert_raises(Triad::ValueNotPresent){
+      triad.keys(Object.new)
+    }
+  end
 end
 
 describe Triad, '#descriptors' do
@@ -80,6 +92,18 @@ describe Triad, '#descriptors' do
   it 'returns the descriptor for the given value' do
     assert_equal ['Admin'], triad.descriptors(user)
   end
+
+  it 'errors when the given key is not found' do
+    assert_raises(Triad::KeyNotPresent){
+      triad.descriptors(:invalid_key)
+    }
+  end
+
+  it 'errors when the given value is not found' do
+    assert_raises(Triad::ValueNotPresent){
+      triad.descriptors(Object.new)
+    }
+  end
 end
 
 describe Triad, '#values' do
@@ -96,6 +120,18 @@ describe Triad, '#values' do
 
   it 'returns the value for the given descriptor' do
     assert_equal [user], triad.values('Admin')
+  end
+
+  it 'errors when the given key is not found' do
+    assert_raises(Triad::KeyNotPresent){
+      triad.values(:invalid_key)
+    }
+  end
+
+  it 'errors when the given descriptor is not found' do
+    assert_raises(Triad::DescriptorNotPresent){
+      triad.values('Invalid Descriptor')
+    }
   end
 end
 
