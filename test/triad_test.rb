@@ -29,22 +29,22 @@ describe Triad, '#<<' do
   it 'assigns symbol as key' do
     object = Object.new
     triad << ['OutOfOrder', object, :surprise]
-    assert_equal :surprise, triad.keys('OutOfOrder')
-    assert_equal :surprise, triad.keys(object)
+    assert_equal [:surprise], triad.keys('OutOfOrder')
+    assert_equal [:surprise], triad.keys(object)
   end
 
   it 'assigns string as descriptor' do
     object = Object.new
     triad << ['OutOfOrder', object, :surprise]
-    assert_equal 'OutOfOrder', triad.descriptors(:surprise)
-    assert_equal 'OutOfOrder', triad.descriptors(object)
+    assert_equal ['OutOfOrder'], triad.descriptors(:surprise)
+    assert_equal ['OutOfOrder'], triad.descriptors(object)
   end
 
   it 'assigns non-symbol, non-string objects as value' do
     object = Object.new
     triad << ['OutOfOrder', object, :surprise]
-    assert_equal object, triad.values(:surprise)
-    assert_equal object, triad.values('OutOfOrder')
+    assert_equal [object], triad.values(:surprise)
+    assert_equal [object], triad.values('OutOfOrder')
   end
 end
 
@@ -57,11 +57,11 @@ describe Triad, '#keys' do
   }
 
   it 'returns the key for the given descriptor' do
-    assert_equal :admin, triad.keys('Admin')
+    assert_equal [:admin], triad.keys('Admin')
   end
 
   it 'returns the key for the given value' do
-    assert_equal :admin, triad.keys(user)
+    assert_equal [:admin], triad.keys(user)
   end
 end
 
@@ -74,11 +74,11 @@ describe Triad, '#descriptors' do
   }
 
   it 'returns the descriptor for the given key' do
-    assert_equal 'Admin', triad.descriptors(:admin)
+    assert_equal ['Admin'], triad.descriptors(:admin)
   end
 
   it 'returns the descriptor for the given value' do
-    assert_equal 'Admin', triad.descriptors(user)
+    assert_equal ['Admin'], triad.descriptors(user)
   end
 end
 
@@ -91,11 +91,11 @@ describe Triad, '#values' do
   }
 
   it 'returns the value for the given key' do
-    assert_equal user, triad.values(:admin)
+    assert_equal [user], triad.values(:admin)
   end
 
   it 'returns the value for the given descriptor' do
-    assert_equal user, triad.values('Admin')
+    assert_equal [user], triad.values('Admin')
   end
 end
 

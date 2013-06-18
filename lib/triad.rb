@@ -23,17 +23,13 @@ class Triad
   end
 
   def keys_from_descriptor(descriptor)
-    triad = @storage.find{|_, array|
-      array[0] == descriptor
-    }
-    triad && triad[0]
+    hash = with_descriptor(descriptor)
+    hash.keys
   end
 
   def keys_from_value(value)
-    triad = @storage.find{|_, array|
-      array[1] == value
-    }
-    triad && triad[0]
+    hash = with_value(value)
+    hash.keys
   end
 
   def descriptors(arg)
@@ -45,15 +41,18 @@ class Triad
   end
 
   def descriptors_from_key(key)
-    array = @storage[key]
-    array && array[0]
+    fetch(key, :first)
   end
 
   def descriptors_from_value(value)
-    triad = @storage.find{|_, array|
-      array[1] == value
+    hash = with_value(value)
+    hash.values.map{|arr| arr.first }
+  end
+
+  def with_value(value)
+    @storage.select{ |key, array|
+      array.last == value
     }
-    triad && triad[1][0]
   end
 
   def values(arg)
@@ -65,15 +64,18 @@ class Triad
   end
 
   def values_from_key(key)
-    array = @storage[key]
-    array && array[1]
+    fetch(key, :last)
   end
 
   def values_from_descriptor(descriptor)
-    triad = @storage.find{|_, array|
-      array[0] == descriptor
+    hash = with_descriptor(descriptor)
+    hash.values.map{|arr| arr.last }
+  end
+
+  def with_descriptor(descriptor)
+    @storage.select{ |key, array|
+      array.first == descriptor
     }
-    triad && triad[1][1]
   end
 
   def <<(array)
@@ -89,5 +91,11 @@ class Triad
     @storage.each do |key, (descriptor, value)|
       yield key, descriptor, value
     end
+  end
+
+  private
+
+  def fetch(key, locator=:first)
+    Array(@storage.fetch(key){ [] }.send(locator))
   end
 end
