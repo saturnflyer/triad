@@ -64,6 +64,16 @@ describe Triad, '#keys' do
     assert_equal [:admin], triad.keys(user)
   end
 
+  it 'returns the keys for the given key' do
+    assert_equal [:admin], triad.keys(:admin)
+  end
+
+  it 'errors when the given key is not found' do
+    assert_raises(Triad::KeyNotPresent){
+      triad.keys(:invalid_key)
+    }
+  end
+
   it 'errors when the given descriptor is not found' do
     assert_raises(Triad::DescriptorNotPresent){
       triad.keys('Invalid Descriptor')
@@ -91,6 +101,16 @@ describe Triad, '#descriptors' do
 
   it 'returns the descriptor for the given value' do
     assert_equal ['Admin'], triad.descriptors(user)
+  end
+
+  it 'returns the descriptors for the given descriptor' do
+    assert_equal ['Admin'], triad.descriptors('Admin')
+  end
+
+  it 'errors when the given descriptor is not found' do
+    assert_raises(Triad::DescriptorNotPresent){
+      triad.descriptors('Not Present')
+    }
   end
 
   it 'errors when the given key is not found' do

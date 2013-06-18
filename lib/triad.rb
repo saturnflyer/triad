@@ -18,7 +18,13 @@ class Triad
   end
 
   def keys(arg)
-    if arg.is_a?(String)
+    if arg.is_a?(Symbol)
+      if @storage.has_key?(arg)
+        [arg]
+      else
+        fetch(arg)
+      end
+    elsif arg.is_a?(String)
       keys_from_descriptor(arg)
     else
       keys_from_value(arg)
@@ -36,7 +42,9 @@ class Triad
   end
 
   def descriptors(arg)
-    if arg.is_a?(Symbol)
+    if arg.is_a?(String)
+      descriptors_from_descriptor(arg)
+    elsif arg.is_a?(Symbol)
       descriptors_from_key(arg)
     else
       descriptors_from_value(arg)
@@ -45,6 +53,11 @@ class Triad
 
   def descriptors_from_key(key)
     fetch(key, :first)
+  end
+
+  def descriptors_from_descriptor(descriptor)
+    hash = with_descriptor(descriptor)
+    hash.values.map{|arr| arr.first }
   end
 
   def descriptors_from_value(value)
@@ -61,7 +74,9 @@ class Triad
   end
 
   def values(arg)
-    if arg.is_a?(Symbol)
+    if !arg.is_a?(String) && !arg.is_a?(Symbol)
+      values_from_value(arg)
+    elsif arg.is_a?(Symbol)
       values_from_key(arg)
     else
       values_from_descriptor(arg)
@@ -74,6 +89,11 @@ class Triad
 
   def values_from_descriptor(descriptor)
     hash = with_descriptor(descriptor)
+    hash.values.map{|arr| arr.last }
+  end
+
+  def values_from_value(value)
+    hash = with_value(value)
     hash.values.map{|arr| arr.last }
   end
 
