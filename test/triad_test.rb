@@ -25,6 +25,27 @@ describe Triad, '#<<' do
       triad << [:test, 'More', Object.new]
     }
   end
+
+  it 'assigns symbol as key' do
+    object = Object.new
+    triad << ['OutOfOrder', object, :surprise]
+    assert_equal :surprise, triad.keys('OutOfOrder')
+    assert_equal :surprise, triad.keys(object)
+  end
+
+  it 'assigns string as descriptor' do
+    object = Object.new
+    triad << ['OutOfOrder', object, :surprise]
+    assert_equal 'OutOfOrder', triad.descriptors(:surprise)
+    assert_equal 'OutOfOrder', triad.descriptors(object)
+  end
+
+  it 'assigns non-symbol, non-string objects as value' do
+    object = Object.new
+    triad << ['OutOfOrder', object, :surprise]
+    assert_equal object, triad.values(:surprise)
+    assert_equal object, triad.values('OutOfOrder')
+  end
 end
 
 describe Triad, '#keys' do
