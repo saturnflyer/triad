@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Triad::VERSION
   spec.authors       = ["'Jim Gay'"]
   spec.email         = ["jim@saturnflyer.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Manage a collection with 3 data points}
+  spec.summary       = %q{Manage a collection with 3 data points}
   spec.homepage      = ""
   spec.license       = "MIT"
 

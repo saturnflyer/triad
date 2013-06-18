@@ -3,33 +3,36 @@ require "triad/version"
 class Triad
   include Enumerable
 
+  class InvalidAddition < StandardError
+    def message
+      "your array length must be 3"
+    end
+  end
+
   def initialize(*args)
     @storage = {}
   end
 
-  attr_reader :keys, :descriptors, :values
-  private :keys, :descriptors, :values
-
-  def key(string_or_object)
+  def key(arg)
     Array(@storage.find{|key, array|
-      array[0] == string_or_object || array[1] == string_or_object
+      array[0] == arg || array[1] == arg
     }).first
   end
 
-  def descriptor(sym_or_object)
+  def descriptor(arg)
     Array(Array(@storage.find{|key, array|
-      array[0] == string_or_object || array[1] == string_or_object
+      key == arg || array[1] == arg
     })[1])[0]
   end
 
-  def value(symbol_or_string)
+  def value(arg)
     Array(Array(@storage.find{|key, array|
-      array[0] == string_or_object || array[1] == string_or_object
+      key == arg || array[0] == arg
     })[1])[1]
   end
 
   def <<(array)
-    raise "your array length must be 3" unless array.length == 3
+    raise InvalidAddition unless array.length == 3
     array_key = array.find{|item| item.is_a?(Symbol) }
     array_descriptor = array.find{|item| item.is_a?(String) }
     array_value = array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
