@@ -1,5 +1,10 @@
 # Triad
 
+[![Build Status](https://travis-ci.org/saturnflyer/triad.png?branch=master)](https://travis-ci.org/saturnflyer/triad)
+[![Code Climate](https://codeclimate.com/github/saturnflyer/triad.png)](https://codeclimate.com/github/saturnflyer/triad)
+[![Coverage Status](https://coveralls.io/repos/saturnflyer/triad/badge.png)](https://coveralls.io/r/saturnflyer/triad)
+[![Gem Version](https://badge.fury.io/rb/triad.png)](http://badge.fury.io/rb/triad)
+
 A Triad is like a Set, or three-part array.
 
 A Triad is a collection of items each with a `key`, `descriptor`, and `value`.
