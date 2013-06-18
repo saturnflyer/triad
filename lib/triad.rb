@@ -59,10 +59,4 @@ class Triad
       yield key, descriptor, value
     end
   end
-
-  private
-
-  def fetch(key, locator=:first)
-    Array(@storage.fetch(key){ raise KeyNotPresent.new }.send(locator))
-  end
 end
