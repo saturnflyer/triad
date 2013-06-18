@@ -27,7 +27,7 @@ describe Triad, '#<<' do
   end
 end
 
-describe Triad, '#key' do
+describe Triad, '#keys' do
   let(:user){ Object.new }
   let(:triad){
     tri = Triad.new
@@ -44,7 +44,7 @@ describe Triad, '#key' do
   end
 end
 
-describe Triad, '#descriptor' do
+describe Triad, '#descriptors' do
   let(:user){ Object.new }
   let(:triad){
     tri = Triad.new
@@ -61,24 +61,7 @@ describe Triad, '#descriptor' do
   end
 end
 
-describe Triad, '#value' do
-  let(:user){ Object.new }
-  let(:triad){
-    tri = Triad.new
-    tri << [:admin, 'Admin', user]
-    tri
-  }
-
-  it 'returns the value for the given key' do
-    assert_equal user, triad.values(:admin)
-  end
-
-  it 'returns the value for the given descriptor' do
-    assert_equal user, triad.values('Admin')
-  end
-end
-
-describe Triad, '#value' do
+describe Triad, '#values' do
   let(:user){ Object.new }
   let(:triad){
     tri = Triad.new

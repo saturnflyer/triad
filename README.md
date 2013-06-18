@@ -9,6 +9,8 @@ A Triad is like a Set, or three-part array.
 
 A Triad is a collection of items each with a `key`, `descriptor`, and `value`.
 
+Each `key` must be unique.
+
 ```ruby
 user = Object.new
 
