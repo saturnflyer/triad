@@ -18,6 +18,13 @@ describe Triad, '#<<' do
       triad << [:test, 'Test']
     }
   end
+
+  it 'rejects arrays with an existing key' do
+    triad << [:test, 'Test', Object.new]
+    assert_raises(Triad::InvalidAddition){
+      triad << [:test, 'More', Object.new]
+    }
+  end
 end
 
 describe Triad, '#key' do
