@@ -10,17 +10,17 @@ user = Object.new
 map = Triad.new
 map << [:admin, 'Admin', user]
 
-map.key('Admin') #=> :admin
-map.value('Admin') #=> user
-map.descriptor('Admin') #=> 'Admin' or raise DescriptorNotPresent
+map.keys('Admin') #=> [:admin]
+map.values('Admin') #=> [user]
+map.descriptors('Admin') #=> ['Admin'] or raise DescriptorNotPresent
 
-map.descriptor(user) #=> 'Admin'
-map.key(user) #=> :admin
-map.value(user) #=> user or raise ValueNotPresent
+map.descriptors(user) #=> ['Admin']
+map.keys(user) #=> [:admin]
+map.values(user) #=> [user] or raise ValueNotPresent
 
-map.value(:admin) #=> user
-map.descriptor(:admin) #=> 'Admin'
-map.key(:admin) #=> :admin or raise KeyNotPresent
+map.values(:admin) #=> [user]
+map.descriptors(:admin) #=> ['Admin']
+map.keys(:admin) #=> [:admin] or raise KeyNotPresent
 
 map.each do |key, descriptor, value|
   #...
@@ -31,7 +31,9 @@ end
 
 Add this line to your application's Gemfile:
 
-    gem 'triad'
+```ruby
+gem 'triad'
+```
 
 And then execute:
 

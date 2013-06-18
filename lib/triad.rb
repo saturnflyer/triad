@@ -14,62 +14,62 @@ class Triad
     @storage = {}
   end
 
-  def key(arg)
+  def keys(arg)
     if arg.is_a?(String)
-      key_from_descriptor(arg)
+      keys_from_descriptor(arg)
     else
-      key_from_value(arg)
+      keys_from_value(arg)
     end
   end
 
-  def key_from_descriptor(descriptor)
+  def keys_from_descriptor(descriptor)
     triad = @storage.find{|_, array|
       array[0] == descriptor
     }
     triad && triad[0]
   end
 
-  def key_from_value(value)
+  def keys_from_value(value)
     triad = @storage.find{|_, array|
       array[1] == value
     }
     triad && triad[0]
   end
 
-  def descriptor(arg)
+  def descriptors(arg)
     if arg.is_a?(Symbol)
-      descriptor_from_key(arg)
+      descriptors_from_key(arg)
     else
-      descriptor_from_value(arg)
+      descriptors_from_value(arg)
     end
   end
 
-  def descriptor_from_key(key)
+  def descriptors_from_key(key)
     array = @storage[key]
     array && array[0]
   end
 
-  def descriptor_from_value(value)
+  def descriptors_from_value(value)
     triad = @storage.find{|_, array|
       array[1] == value
     }
     triad && triad[1][0]
   end
 
-  def value(arg)
+  def values(arg)
     if arg.is_a?(Symbol)
-      value_from_key(arg)
+      values_from_key(arg)
     else
-      value_from_descriptor(arg)
+      values_from_descriptor(arg)
     end
   end
 
-  def value_from_key(key)
+  def values_from_key(key)
     array = @storage[key]
     array && array[1]
   end
 
-  def value_from_descriptor(descriptor)
+  def values_from_descriptor(descriptor)
     triad = @storage.find{|_, array|
       array[0] == descriptor
     }

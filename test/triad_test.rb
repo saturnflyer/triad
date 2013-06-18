@@ -36,11 +36,11 @@ describe Triad, '#key' do
   }
 
   it 'returns the key for the given descriptor' do
-    assert_equal :admin, triad.key('Admin')
+    assert_equal :admin, triad.keys('Admin')
   end
 
   it 'returns the key for the given value' do
-    assert_equal :admin, triad.key(user)
+    assert_equal :admin, triad.keys(user)
   end
 end
 
@@ -53,11 +53,11 @@ describe Triad, '#descriptor' do
   }
 
   it 'returns the descriptor for the given key' do
-    assert_equal 'Admin', triad.descriptor(:admin)
+    assert_equal 'Admin', triad.descriptors(:admin)
   end
 
   it 'returns the descriptor for the given value' do
-    assert_equal 'Admin', triad.descriptor(user)
+    assert_equal 'Admin', triad.descriptors(user)
   end
 end
 
@@ -70,11 +70,11 @@ describe Triad, '#value' do
   }
 
   it 'returns the value for the given key' do
-    assert_equal user, triad.value(:admin)
+    assert_equal user, triad.values(:admin)
   end
 
   it 'returns the value for the given descriptor' do
-    assert_equal user, triad.value('Admin')
+    assert_equal user, triad.values('Admin')
   end
 end
 
@@ -87,10 +87,10 @@ describe Triad, '#value' do
   }
 
   it 'returns the value for the given key' do
-    assert_equal user, triad.value(:admin)
+    assert_equal user, triad.values(:admin)
   end
 
   it 'returns the value for the given descriptor' do
-    assert_equal user, triad.value('Admin')
+    assert_equal user, triad.values('Admin')
   end
 end
