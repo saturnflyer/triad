@@ -10,6 +10,36 @@ class Triad
     attr_reader :interest, :storage
     private :storage
 
+    def key_position
+      0
+    end
+
+    def descriptor_position
+      1
+    end
+
+    def value_position
+      2
+    end
+
+    def interest_position
+      basename = self.class.name.split('::').last
+      interest_name = basename.sub('Finder','').downcase
+      self.send("#{interest_name}_position")
+    end
+
+    def keys
+      with_interest.keys
+    end
+
+    def values
+      with_interest.map{|key, array| [key, array].flatten[value_position] }
+    end
+
+    def descriptors
+      with_interest.map{|key, array| [key, array].flatten[descriptor_position] }
+    end
+
     private
 
     def raise_error
@@ -19,75 +49,20 @@ class Triad
     end
 
     def with_interest
-
+      lookup = storage.select{|key, array|
+        [key, array].flatten[interest_position] == interest
+      }
+      raise_error if lookup.empty?
+      lookup
     end
   end
 
   class KeyFinder < Finder
-    def values
-      [details.last]
-    end
-
-    def keys
-      details && [interest]
-    end
-
-    def descriptors
-      [details.first]
-    end
-
-    private
-
-    def details
-      storage.fetch(interest){ raise_error }
-    end
   end
 
   class ValueFinder < Finder
-    def keys
-      with_value.keys
-    end
-
-    def values
-      with_value.values.map{|_,value| value }
-    end
-
-    def descriptors
-      with_value.values.map{|descriptor,_| descriptor }
-    end
-
-    private
-
-    def with_value
-      lookup = storage.select{ |key, array|
-        array.last == interest
-      }
-      raise_error if lookup.empty?
-      lookup
-    end
   end
 
   class DescriptorFinder < Finder
-    def keys
-      with_descriptor.keys
-    end
-
-    def values
-      with_descriptor.values.map{|_,value| value }
-    end
-
-    def descriptors
-      with_descriptor.values.map{|descriptor,_| descriptor }
-    end
-
-    private
-
-    def with_descriptor
-      lookup = storage.select{ |key, array|
-        array.first == interest
-      }
-      raise_error if lookup.empty?
-      lookup
-    end
   end
 end
