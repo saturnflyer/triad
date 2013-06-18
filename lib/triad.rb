@@ -1,4 +1,5 @@
 require "triad/version"
+require "triad/finder"
 
 class Triad
   include Enumerable
@@ -10,7 +11,6 @@ class Triad
   end
   class ValueNotPresent < StandardError; end
   class DescriptorNotPresent < StandardError; end
-  class KeyNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
   def initialize(*args)
@@ -19,11 +19,7 @@ class Triad
 
   def keys(arg)
     if arg.is_a?(Symbol)
-      if @storage.has_key?(arg)
-        [arg]
-      else
-        fetch(arg)
-      end
+      KeyFinder.new(arg, @storage).keys
     elsif arg.is_a?(String)
       keys_from_descriptor(arg)
     else
@@ -52,7 +48,7 @@ class Triad
   end
 
   def descriptors_from_key(key)
-    fetch(key, :first)
+    KeyFinder.new(key, @storage).descriptors
   end
 
   def descriptors_from_descriptor(descriptor)
@@ -77,14 +73,10 @@ class Triad
     if !arg.is_a?(String) && !arg.is_a?(Symbol)
       values_from_value(arg)
     elsif arg.is_a?(Symbol)
-      values_from_key(arg)
+      KeyFinder.new(arg, @storage).values
     else
       values_from_descriptor(arg)
     end
-  end
-
-  def values_from_key(key)
-    fetch(key, :last)
   end
 
   def values_from_descriptor(descriptor)

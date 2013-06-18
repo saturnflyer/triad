@@ -17,7 +17,7 @@ class Triad
     end
 
     def keys
-      storage.has_key?(interest) && [interest]
+      details && [interest]
     end
 
     def descriptors
