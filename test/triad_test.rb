@@ -77,3 +77,19 @@ describe Triad, '#values' do
     assert_equal user, triad.values('Admin')
   end
 end
+
+describe Triad, 'enumeration' do
+  let(:user){ Object.new }
+  let(:triad){
+    tri = Triad.new
+    tri << [:admin, 'Admin', user]
+    tri
+  }
+  it 'yields each triad as 3 block variables' do
+    result = ''
+    triad.each do |key, descriptor, value|
+      result << "key: #{key}, descriptor: #{descriptor}, value: #{value.class.name}"
+    end
+    assert_equal 'key: admin, descriptor: Admin, value: Object', result
+  end
+end

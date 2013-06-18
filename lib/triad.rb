@@ -86,6 +86,8 @@ class Triad
   end
 
   def each
-    yield keys.zip(descriptors, values)
+    @storage.each do |key, (descriptor, value)|
+      yield key, descriptor, value
+    end
   end
 end
