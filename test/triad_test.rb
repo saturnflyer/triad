@@ -70,3 +70,20 @@ describe Triad, '#value' do
     assert_equal user, triad.value('Admin')
   end
 end
+
+describe Triad, '#value' do
+  let(:user){ Object.new }
+  let(:triad){
+    tri = Triad.new
+    tri << [:admin, 'Admin', user]
+    tri
+  }
+
+  it 'returns the value for the given key' do
+    assert_equal user, triad.value(:admin)
+  end
+
+  it 'returns the value for the given descriptor' do
+    assert_equal user, triad.value('Admin')
+  end
+end
