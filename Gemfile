@@ -7,4 +7,5 @@ group :test do
   gem "rake"
   gem "simplecov"
   gem "minitest"
+  gem "coveralls"
 end
