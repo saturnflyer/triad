@@ -9,6 +9,18 @@ class Triad
     end
     attr_reader :interest, :storage
     private :storage
+
+    private
+
+    def raise_error
+      error_name = self.class.name.sub('Finder','NotPresent')
+      error_class = Object.const_get("Triad::#{error_name}")
+      raise error_class.new
+    end
+
+    def with_interest
+
+    end
   end
 
   class KeyFinder < Finder
@@ -27,7 +39,7 @@ class Triad
     private
 
     def details
-      storage.fetch(interest){ raise KeyNotPresent.new }
+      storage.fetch(interest){ raise_error }
     end
   end
 
@@ -50,7 +62,7 @@ class Triad
       lookup = storage.select{ |key, array|
         array.last == interest
       }
-      raise ValueNotPresent.new if lookup.empty?
+      raise_error if lookup.empty?
       lookup
     end
   end
@@ -74,7 +86,7 @@ class Triad
       lookup = storage.select{ |key, array|
         array.first == interest
       }
-      raise DescriptorNotPresent.new if lookup.empty?
+      raise_error if lookup.empty?
       lookup
     end
   end
