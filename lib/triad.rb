@@ -9,8 +9,6 @@ class Triad
       "your array length must be 3"
     end
   end
-  class ValueNotPresent < StandardError; end
-  class DescriptorNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
   def initialize(*args)
@@ -21,80 +19,30 @@ class Triad
     if arg.is_a?(Symbol)
       KeyFinder.new(arg, @storage).keys
     elsif arg.is_a?(String)
-      keys_from_descriptor(arg)
+      DescriptorFinder.new(arg, @storage).keys
     else
-      keys_from_value(arg)
+      ValueFinder.new(arg, @storage).keys
     end
-  end
-
-  def keys_from_descriptor(descriptor)
-    hash = with_descriptor(descriptor)
-    hash.keys
-  end
-
-  def keys_from_value(value)
-    hash = with_value(value)
-    hash.keys
   end
 
   def descriptors(arg)
     if arg.is_a?(String)
-      descriptors_from_descriptor(arg)
+      DescriptorFinder.new(arg, @storage).descriptors
     elsif arg.is_a?(Symbol)
-      descriptors_from_key(arg)
+      KeyFinder.new(arg, @storage).descriptors
     else
-      descriptors_from_value(arg)
+      ValueFinder.new(arg, @storage).descriptors
     end
-  end
-
-  def descriptors_from_key(key)
-    KeyFinder.new(key, @storage).descriptors
-  end
-
-  def descriptors_from_descriptor(descriptor)
-    hash = with_descriptor(descriptor)
-    hash.values.map{|arr| arr.first }
-  end
-
-  def descriptors_from_value(value)
-    hash = with_value(value)
-    hash.values.map{|arr| arr.first }
-  end
-
-  def with_value(value)
-    lookup = @storage.select{ |key, array|
-      array.last == value
-    }
-    raise ValueNotPresent.new if lookup.empty?
-    lookup
   end
 
   def values(arg)
     if !arg.is_a?(String) && !arg.is_a?(Symbol)
-      values_from_value(arg)
+      ValueFinder.new(arg, @storage).values
     elsif arg.is_a?(Symbol)
       KeyFinder.new(arg, @storage).values
     else
-      values_from_descriptor(arg)
+      DescriptorFinder.new(arg, @storage).values
     end
-  end
-
-  def values_from_descriptor(descriptor)
-    hash = with_descriptor(descriptor)
-    hash.values.map{|arr| arr.last }
-  end
-
-  def values_from_value(value)
-    hash = with_value(value)
-    hash.values.map{|arr| arr.last }
-  end
-
-  def with_descriptor(descriptor)
-    lookup = @storage.select{ |key, array|
-      array.first == descriptor
-    }
-    raise DescriptorNotPresent.new if lookup.empty?
-    lookup
   end
 
   def <<(array)
