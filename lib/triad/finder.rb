@@ -14,32 +14,16 @@ class Triad
       [:key, :descriptor, :value]
     end
 
-    def key_position
-      positions.index(:key)
-    end
-
-    def descriptor_position
-      positions.index(:descriptor)
-    end
-
-    def value_position
-      positions.index(:value)
-    end
-
-    def interest_position
-      self.send("#{type}_position")
-    end
-
     def keys
       with_interest.keys
     end
 
     def values
-      with_interest.map{|key, array| [key, array].flatten[value_position] }
+      with_interest.map{|key, array| [key, array].flatten[positions.index(:value)] }
     end
 
     def descriptors
-      with_interest.map{|key, array| [key, array].flatten[descriptor_position] }
+      with_interest.map{|key, array| [key, array].flatten[positions.index(:descriptor)] }
     end
 
     private
@@ -52,7 +36,7 @@ class Triad
 
     def with_interest
       lookup = storage.select{|key, array|
-        [key, array].flatten[interest_position] == interest
+        [key, array].flatten[positions.index(type)] == interest
       }
       raise_error if lookup.empty?
       lookup
