@@ -34,8 +34,9 @@ class Triad
   def <<(array)
     array_key = array.find{|item| item.is_a?(Symbol) }
     raise InvalidAddition if array.length != 3 || key_exists?(array_key)
+
     array_descriptor = array.find{|item| item.is_a?(String) }
-    array_value = array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
+    array_value =      array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
 
     storage[array_key] = [array_descriptor, array_value]
     self
