@@ -1,5 +1,4 @@
 require "triad/version"
-require "triad/finder"
 
 class Triad
   include Enumerable
@@ -9,22 +8,27 @@ class Triad
       "your array length must be 3"
     end
   end
+  class ValueNotPresent < StandardError; end
+  class DescriptorNotPresent < StandardError; end
+  class KeyNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
   def initialize(*args)
     @storage = {}
   end
+  attr_reader :storage
+  private :storage
 
   def keys(arg)
-    Finder.new(arg, @storage, argument_type(arg)).keys
+    with_interest(arg).map{|key, _, _| key }
   end
 
   def descriptors(arg)
-    Finder.new(arg, @storage, argument_type(arg)).descriptors
+    with_interest(arg).map{|_, descriptor, _| descriptor }
   end
 
   def values(arg)
-    Finder.new(arg, @storage, argument_type(arg)).values
+    with_interest(arg).map{|_, _, value| value }
   end
 
   def <<(array)
@@ -44,11 +48,29 @@ class Triad
 
   private
 
+  def positions
+    [:key, :descriptor, :value]
+  end
+
   def argument_type(arg)
     case arg
     when Symbol then :key
     when String then :descriptor
     else :value
     end
+  end
+
+  def raise_error(type)
+    error_name = type.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
+    error_class = Triad.const_get("#{error_name}NotPresent")
+    raise error_class.new
+  end
+
+  def with_interest(interest)
+    lookup = storage.select{|key, array|
+      [key, array].flatten[positions.index(argument_type(interest))] == interest
+    }
+    raise_error(argument_type(interest)) if lookup.empty?
+    lookup.map{|key, array| [key, array].flatten }
   end
 end
