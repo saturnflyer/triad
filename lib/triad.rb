@@ -16,33 +16,30 @@ class Triad
   end
 
   def keys(arg)
-    if arg.is_a?(Symbol)
-      Finder.new(arg, @storage, :key).keys
-    elsif arg.is_a?(String)
-      Finder.new(arg, @storage, :descriptor).keys
-    else
-      Finder.new(arg, @storage, :value).keys
-    end
+    finder = case arg
+            when Symbol then :key
+            when String then :descriptor
+            else :value
+            end
+    Finder.new(arg, @storage, finder).keys
   end
 
   def descriptors(arg)
-    if arg.is_a?(String)
-      Finder.new(arg, @storage, :descriptor).descriptors
-    elsif arg.is_a?(Symbol)
-      Finder.new(arg, @storage, :key).descriptors
-    else
-      Finder.new(arg, @storage, :value).descriptors
-    end
+    finder = case arg
+            when Symbol then :key
+            when String then :descriptor
+            else :value
+            end
+    Finder.new(arg, @storage, finder).descriptors
   end
 
   def values(arg)
-    if !arg.is_a?(String) && !arg.is_a?(Symbol)
-      Finder.new(arg, @storage, :value).values
-    elsif arg.is_a?(Symbol)
-      Finder.new(arg, @storage, :key).values
-    else
-      Finder.new(arg, @storage, :descriptor).values
-    end
+    finder = case arg
+            when Symbol then :key
+            when String then :descriptor
+            else :value
+            end
+    Finder.new(arg, @storage, finder).values
   end
 
   def <<(array)
