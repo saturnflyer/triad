@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Triad::VERSION
   spec.authors       = ["'Jim Gay'"]
   spec.email         = ["jim@saturnflyer.com"]
-  spec.description   = %q{Manage a collection with 3 data points}
+  spec.description   = %q{Triad allows you to access data from keys, descriptors, and values}
   spec.summary       = %q{Manage a collection with 3 data points}
   spec.homepage      = ""
   spec.license       = "MIT"
