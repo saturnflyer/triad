@@ -36,12 +36,13 @@ class Triad
     raise InvalidAddition if array.length != 3 || key_exists?(array_key)
     array_descriptor = array.find{|item| item.is_a?(String) }
     array_value = array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
-    @storage[array_key] = [array_descriptor, array_value]
+
+    storage[array_key] = [array_descriptor, array_value]
     self
   end
 
   def each
-    @storage.each do |key, (descriptor, value)|
+    storage.each do |key, (descriptor, value)|
       yield key, descriptor, value
     end
   end
@@ -49,7 +50,7 @@ class Triad
   private
 
   def key_exists?(key)
-    @storage.has_key?(key)
+    storage.has_key?(key)
   end
 
   def positions
