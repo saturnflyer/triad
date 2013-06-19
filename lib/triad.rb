@@ -16,30 +16,15 @@ class Triad
   end
 
   def keys(arg)
-    finder = case arg
-            when Symbol then :key
-            when String then :descriptor
-            else :value
-            end
-    Finder.new(arg, @storage, finder).keys
+    Finder.new(arg, @storage, argument_type(arg)).keys
   end
 
   def descriptors(arg)
-    finder = case arg
-            when Symbol then :key
-            when String then :descriptor
-            else :value
-            end
-    Finder.new(arg, @storage, finder).descriptors
+    Finder.new(arg, @storage, argument_type(arg)).descriptors
   end
 
   def values(arg)
-    finder = case arg
-            when Symbol then :key
-            when String then :descriptor
-            else :value
-            end
-    Finder.new(arg, @storage, finder).values
+    Finder.new(arg, @storage, argument_type(arg)).values
   end
 
   def <<(array)
@@ -54,6 +39,16 @@ class Triad
   def each
     @storage.each do |key, (descriptor, value)|
       yield key, descriptor, value
+    end
+  end
+
+  private
+
+  def argument_type(arg)
+    case arg
+    when Symbol then :key
+    when String then :descriptor
+    else :value
     end
   end
 end
