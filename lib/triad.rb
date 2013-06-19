@@ -67,10 +67,15 @@ class Triad
   end
 
   def with_interest(interest)
+    type = argument_type(interest)
+    index = positions.index(type)
+
     lookup = storage.select{|key, array|
-      [key, array].flatten[positions.index(argument_type(interest))] == interest
-    }
-    raise_error(argument_type(interest)) if lookup.empty?
-    lookup.map{|key, array| [key, array].flatten }
+      [key, *array][index] == interest
+    }.map{|key, array| [key, *array] }
+
+    raise_error(type) if lookup.empty?
+
+    lookup
   end
 end
