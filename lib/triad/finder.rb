@@ -10,16 +10,20 @@ class Triad
     attr_reader :interest, :storage
     private :storage
 
+    def positions
+      [:key, :descriptor, :value]
+    end
+
     def key_position
-      0
+      positions.index(:key)
     end
 
     def descriptor_position
-      1
+      positions.index(:descriptor)
     end
 
     def value_position
-      2
+      positions.index(:value)
     end
 
     def interest_position
