@@ -17,31 +17,31 @@ class Triad
 
   def keys(arg)
     if arg.is_a?(Symbol)
-      KeyFinder.new(arg, @storage).keys
+      Finder.new(arg, @storage, :key).keys
     elsif arg.is_a?(String)
-      DescriptorFinder.new(arg, @storage).keys
+      Finder.new(arg, @storage, :descriptor).keys
     else
-      ValueFinder.new(arg, @storage).keys
+      Finder.new(arg, @storage, :value).keys
     end
   end
 
   def descriptors(arg)
     if arg.is_a?(String)
-      DescriptorFinder.new(arg, @storage).descriptors
+      Finder.new(arg, @storage, :descriptor).descriptors
     elsif arg.is_a?(Symbol)
-      KeyFinder.new(arg, @storage).descriptors
+      Finder.new(arg, @storage, :key).descriptors
     else
-      ValueFinder.new(arg, @storage).descriptors
+      Finder.new(arg, @storage, :value).descriptors
     end
   end
 
   def values(arg)
     if !arg.is_a?(String) && !arg.is_a?(Symbol)
-      ValueFinder.new(arg, @storage).values
+      Finder.new(arg, @storage, :value).values
     elsif arg.is_a?(Symbol)
-      KeyFinder.new(arg, @storage).values
+      Finder.new(arg, @storage, :key).values
     else
-      DescriptorFinder.new(arg, @storage).values
+      Finder.new(arg, @storage, :descriptor).values
     end
   end
 

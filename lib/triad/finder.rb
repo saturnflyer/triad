@@ -4,10 +4,10 @@ class Triad
   class KeyNotPresent < StandardError; end
 
   class Finder
-    def initialize(interest, storage)
-      @interest, @storage = interest, storage
+    def initialize(interest, storage, type=:key)
+      @interest, @storage, @type = interest, storage, type
     end
-    attr_reader :interest, :storage
+    attr_reader :interest, :storage, :type
     private :storage
 
     def positions
@@ -27,9 +27,7 @@ class Triad
     end
 
     def interest_position
-      basename = self.class.name.split('::').last
-      interest_name = basename.sub('Finder','').downcase
-      self.send("#{interest_name}_position")
+      self.send("#{type}_position")
     end
 
     def keys
@@ -47,8 +45,8 @@ class Triad
     private
 
     def raise_error
-      error_name = self.class.name.sub('Finder','NotPresent')
-      error_class = Object.const_get("::Triad::#{error_name}")
+      error_name = type.to_s.gsub(/(?:^|_)([a-z])/) { $1.upcase }
+      error_class = Triad.const_get("#{error_name}NotPresent")
       raise error_class.new
     end
 
@@ -59,14 +57,5 @@ class Triad
       raise_error if lookup.empty?
       lookup
     end
-  end
-
-  class KeyFinder < Finder
-  end
-
-  class ValueFinder < Finder
-  end
-
-  class DescriptorFinder < Finder
   end
 end
