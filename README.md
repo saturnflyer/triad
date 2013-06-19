@@ -5,11 +5,13 @@
 [![Coverage Status](https://coveralls.io/repos/saturnflyer/triad/badge.png)](https://coveralls.io/r/saturnflyer/triad)
 [![Gem Version](https://badge.fury.io/rb/triad.png)](http://badge.fury.io/rb/triad)
 
-A Triad is like a Set, or three-part array.
+A Triad is like a Set, or a collection of three-part arrays.
 
 A Triad is a collection of items each with a `key`, `descriptor`, and `value`.
 
-Each `key` must be unique.
+Each `key` must be a unique symbol.
+Each `descriptor` must be a string.
+Each `value` must not be a symbol nor a string.
 
 ```ruby
 user = Object.new
