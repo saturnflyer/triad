@@ -33,7 +33,7 @@ class Triad
 
   def <<(array)
     array_key = array.find{|item| item.is_a?(Symbol) }
-    raise InvalidAddition if array.length != 3 || @storage.has_key?(array_key)
+    raise InvalidAddition if array.length != 3 || key_exists?(array_key)
     array_descriptor = array.find{|item| item.is_a?(String) }
     array_value = array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
     @storage[array_key] = [array_descriptor, array_value]
@@ -47,6 +47,10 @@ class Triad
   end
 
   private
+
+  def key_exists?(key)
+    @storage.has_key?(key)
+  end
 
   def positions
     [:key, :descriptor, :value]
