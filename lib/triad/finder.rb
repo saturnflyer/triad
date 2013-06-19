@@ -44,7 +44,7 @@ class Triad
 
     def raise_error
       error_name = self.class.name.sub('Finder','NotPresent')
-      error_class = Object.const_get("Triad::#{error_name}")
+      error_class = Object.const_get("::Triad::#{error_name}")
       raise error_class.new
     end
 
