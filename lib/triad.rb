@@ -19,16 +19,28 @@ class Triad
   attr_reader :storage
   private :storage
 
-  def keys(arg)
-    with_interest(arg).map{|key, _, _| key }
+  def keys(arg=:__no_argument_given__)
+    if arg == :__no_argument_given__
+      storage.keys
+    else
+      with_interest(arg).map{|key, _, _| key }
+    end
   end
 
-  def descriptors(arg)
-    with_interest(arg).map{|_, descriptor, _| descriptor }
+  def descriptors(arg=:__no_argument_given__)
+    if arg == :__no_argument_given__
+      storage.map{|_,(descriptor,_)| descriptor }
+    else
+      with_interest(arg).map{|_, descriptor, _| descriptor }
+    end
   end
 
-  def values(arg)
-    with_interest(arg).map{|_, _, value| value }
+  def values(arg=:__no_argument_given__)
+    if arg == :__no_argument_given__
+      storage.map{|_,(_,value)| value }.uniq
+    else
+      with_interest(arg).map{|_, _, value| value }
+    end
   end
 
   def <<(array)

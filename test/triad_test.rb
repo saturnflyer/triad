@@ -69,6 +69,11 @@ describe Triad, '#keys' do
     assert_equal [:admin], triad.keys(:admin)
   end
 
+  it 'returns all keys when given no argument' do
+    triad << [:other, 'Other', user]
+    assert_equal [:admin, :other], triad.keys
+  end
+
   it 'errors when the given key is not found' do
     assert_raises(Triad::KeyNotPresent){
       triad.keys(:invalid_key)
@@ -108,6 +113,11 @@ describe Triad, '#descriptors' do
     assert_equal ['Admin'], triad.descriptors('Admin')
   end
 
+  it 'returns all descriptors when given no argument' do
+    triad << [:other, 'Other', user]
+    assert_equal ['Admin', 'Other'], triad.descriptors
+  end
+
   it 'errors when the given descriptor is not found' do
     assert_raises(Triad::DescriptorNotPresent){
       triad.descriptors('Not Present')
@@ -142,6 +152,12 @@ describe Triad, '#values' do
   it 'returns the value for the given descriptor' do
     assert_equal [user], triad.values('Admin')
   end
+
+  it 'returns all values when given no argument' do
+    triad << [:other, 'Other', user]
+    assert_equal [user], triad.values
+  end
+
 
   it 'errors when the given key is not found' do
     assert_raises(Triad::KeyNotPresent){
