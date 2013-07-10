@@ -49,6 +49,18 @@ describe Triad, '#<<' do
   end
 end
 
+describe Triad, '#update' do
+  let(:triad){ Triad.new }
+
+  it 'updates a descriptor and object for the given key' do
+    object = Object.new
+    triad << [:test, 'Test', object]
+    assert_equal ['Test'], triad.descriptors(:test)
+    triad.update(:test, 'Updated', Object.new)
+    assert_equal ['Updated'], triad.descriptors(:test)
+  end
+end
+
 describe Triad, '#keys' do
   let(:user){ Object.new }
   let(:triad){

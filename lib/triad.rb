@@ -3,11 +3,7 @@ require "triad/version"
 class Triad
   include Enumerable
 
-  class InvalidAddition < StandardError
-    def message
-      "your array length must be 3"
-    end
-  end
+  class InvalidAddition < StandardError; end
   class ValueNotPresent < StandardError; end
   class DescriptorNotPresent < StandardError; end
   class KeyNotPresent < StandardError; end
@@ -45,13 +41,18 @@ class Triad
 
   def <<(array)
     array_key = array.find{|item| item.is_a?(Symbol) }
-    raise InvalidAddition if array.length != 3 || key_exists?(array_key)
+    raise InvalidAddition.new("your array length must be 3") if array.length != 3
+    raise InvalidAddition.new("the provided key already exists") if key_exists?(array_key)
 
     array_descriptor = array.find{|item| item.is_a?(String) }
     array_value =      array.find{|item| !item.is_a?(String) && !item.is_a?(Symbol) }
 
     storage[array_key] = [array_descriptor, array_value]
     self
+  end
+
+  def update(key, descriptor, value)
+    storage[key] = [descriptor, value]
   end
 
   def each
