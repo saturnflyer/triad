@@ -1,4 +1,5 @@
 require "triad/version"
+require 'thread_safe'
 
 class Triad
   include Enumerable
@@ -10,7 +11,7 @@ class Triad
 
   # stored as {key => ['Descriptor', value]}
   def initialize(*args)
-    @storage = {}
+    @storage = ThreadSafe::Hash.new
   end
   attr_reader :storage
   private :storage
