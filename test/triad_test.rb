@@ -11,7 +11,7 @@ describe Triad, '#<<' do
     error = assert_raises(Triad::InvalidAddition){
       triad << [:test, 'Test', Object.new, 'Other']
     }
-    assert_match /array length must be 3/, error.message
+    assert_match(/array length must be 3/, error.message)
   end
 
   it 'rejects arrays with fewer than 3 items' do
