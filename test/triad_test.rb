@@ -26,26 +26,11 @@ describe Triad, '#<<' do
       triad << [:test, 'More', Object.new]
     }
   end
-
-  it 'assigns symbol as key' do
-    object = Object.new
-    triad << ['OutOfOrder', object, :surprise]
-    assert_equal [:surprise], triad.keys('OutOfOrder')
-    assert_equal [:surprise], triad.keys(object)
-  end
-
-  it 'assigns string as descriptor' do
-    object = Object.new
-    triad << ['OutOfOrder', object, :surprise]
-    assert_equal ['OutOfOrder'], triad.descriptors(:surprise)
-    assert_equal ['OutOfOrder'], triad.descriptors(object)
-  end
-
-  it 'assigns non-symbol, non-string objects as value' do
-    object = Object.new
-    triad << ['OutOfOrder', object, :surprise]
-    assert_equal [object], triad.values(:surprise)
-    assert_equal [object], triad.values('OutOfOrder')
+  
+  it 'accepts strings as values' do
+    object = "a string as an value"
+    triad << [:key, 'Descriptor', object]
+    assert_equal [object], triad.values(:key)
   end
 end
 
@@ -87,19 +72,19 @@ describe Triad, '#keys' do
   end
 
   it 'errors when the given key is not found' do
-    assert_raises(Triad::KeyNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.keys(:invalid_key)
     }
   end
 
   it 'errors when the given descriptor is not found' do
-    assert_raises(Triad::DescriptorNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.keys('Invalid Descriptor')
     }
   end
 
   it 'errors when the given value is not found' do
-    assert_raises(Triad::ValueNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.keys(Object.new)
     }
   end
@@ -131,19 +116,19 @@ describe Triad, '#descriptors' do
   end
 
   it 'errors when the given descriptor is not found' do
-    assert_raises(Triad::DescriptorNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.descriptors('Not Present')
     }
   end
 
   it 'errors when the given key is not found' do
-    assert_raises(Triad::KeyNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.descriptors(:invalid_key)
     }
   end
 
   it 'errors when the given value is not found' do
-    assert_raises(Triad::ValueNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.descriptors(Object.new)
     }
   end
@@ -172,13 +157,13 @@ describe Triad, '#values' do
 
 
   it 'errors when the given key is not found' do
-    assert_raises(Triad::KeyNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.values(:invalid_key)
     }
   end
 
   it 'errors when the given descriptor is not found' do
-    assert_raises(Triad::DescriptorNotPresent){
+    assert_raises(Triad::ItemNotPresent){
       triad.values('Invalid Descriptor')
     }
   end

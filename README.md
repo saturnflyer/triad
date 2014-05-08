@@ -22,17 +22,17 @@ map << [:admin, 'Admin', user]
 map.keys('Admin') #=> [:admin]
 map.values('Admin') #=> [user]
 map.descriptors('Admin') #=> ['Admin']
-# or raise Triad::DescriptorNotPresent
+# or raise Triad::ItemNotPresent
 
 map.descriptors(user) #=> ['Admin']
 map.keys(user) #=> [:admin]
 map.values(user) #=> [user]
-# or raise Triad::ValueNotPresent
+# or raise Triad::ItemNotPresent
 
 map.values(:admin) #=> [user]
 map.descriptors(:admin) #=> ['Admin']
 map.keys(:admin) #=> [:admin]
-# or raise Triad::KeyNotPresent
+# or raise Triad::ItemNotPresent
 
 map.each do |key, descriptor, value|
   #...
