@@ -8,7 +8,7 @@ class Triad
   class ItemNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
-  def initialize(*args)
+  def initialize
     @storage = ThreadSafe::Hash.new
   end
   attr_reader :storage
@@ -75,19 +75,16 @@ class Triad
   end
 
   def with_interest(interest)
-    index = case
-            when key_exists?(interest)
-              0
-            when descriptor_exists?(interest)
-              1
-            when value_exists?(interest)
-              2
-            else
-              raise ItemNotPresent.new
-            end
+    position = case
+              when key_exists?(interest)        then 0
+              when descriptor_exists?(interest) then 1
+              when value_exists?(interest)      then 2
+              else
+                raise ItemNotPresent.new
+              end
 
     storage.select{|key, array|
-      [key, *array][index] == interest
+      [key, *array].fetch(position) == interest
     }.map{|key, array| [key, *array] }
   end
 end
