@@ -1,5 +1,5 @@
 require "triad/version"
-require 'thread_safe'
+require "concurrent/hash"
 
 class Triad
   include Enumerable
@@ -9,7 +9,7 @@ class Triad
 
   # stored as {key => ['Descriptor', value]}
   def initialize
-    @storage = ThreadSafe::Hash.new
+    @storage = Concurrent::Hash.new
   end
   attr_reader :storage
   private :storage
@@ -54,9 +54,9 @@ class Triad
     storage[key] = [descriptor, value]
   end
 
-  def each
+  def each(&block)
     storage.each do |key, (descriptor, value)|
-      yield key, descriptor, value
+      block.call key, descriptor, value
     end
   end
 
