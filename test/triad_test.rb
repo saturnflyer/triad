@@ -1,6 +1,8 @@
-require 'test_helper'
+require_relative 'test_helper'
 
 describe Triad, '#<<' do
+  cover 'Triad*'
+
   let(:triad){ Triad.new }
 
   it 'shovels 3 item arrays' do
@@ -22,9 +24,10 @@ describe Triad, '#<<' do
 
   it 'rejects arrays with an existing key' do
     triad << [:test, 'Test', Object.new]
-    assert_raises(Triad::InvalidAddition){
+    error = assert_raises(Triad::InvalidAddition){
       triad << [:test, 'More', Object.new]
     }
+    assert_match(/key already exists/, error.message)
   end
   
   it 'accepts strings as values' do
@@ -43,6 +46,20 @@ describe Triad, '#update' do
     assert_equal ['Test'], triad.descriptors(:test)
     triad.update(:test, 'Updated', Object.new)
     assert_equal ['Updated'], triad.descriptors(:test)
+  end
+
+  it "allows a nil object" do
+    triad << [:test, 'Test', nil]
+    assert_equal ['Test'], triad.descriptors(:test)
+    triad.update(:test, 'Updated', nil)
+    assert_equal ['Updated'], triad.descriptors(:test)
+  end
+
+  it "does not allow a nil descriptor" do
+    err = assert_raises(Triad::InvalidAddition){
+      triad.update(:test, nil, Object.new)
+    }
+    assert_equal "the provided descriptor cannot be nil", err.message
   end
 end
 
@@ -131,6 +148,11 @@ describe Triad, '#descriptors' do
     assert_raises(Triad::ItemNotPresent){
       triad.descriptors(Object.new)
     }
+  end
+
+  it 'assumes nil is a value' do
+    triad.update(:admin, 'Admin', nil)
+    assert_equal ['Admin'], triad.descriptors(:admin)
   end
 end
 

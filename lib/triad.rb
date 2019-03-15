@@ -14,16 +14,16 @@ class Triad
   attr_reader :storage
   private :storage
 
-  def keys(arg=:__no_argument_given__)
-    if arg == :__no_argument_given__
+  def keys(arg=nil)
+    if arg == nil
       storage.keys
     else
       with_interest(arg).map{|key, _, _| key }
     end
   end
 
-  def descriptors(arg=:__no_argument_given__)
-    if arg == :__no_argument_given__
+  def descriptors(arg=nil)
+    if arg.nil?
       storage.map{|_,(descriptor,_)| descriptor }
     else
       with_interest(arg).map{|_, descriptor, _| descriptor }
@@ -39,39 +39,40 @@ class Triad
   end
 
   def <<(array)
-    array_key = array[0]
     raise InvalidAddition.new("your array length must be 3") if array.length != 3
+    array_key = array.fetch(0)
     raise InvalidAddition.new("the provided key already exists") if key_exists?(array_key)
 
-    array_descriptor = array[1]
-    array_value =      array[2]
+    array_descriptor = array.fetch(1)
+    array_value =      array.fetch(2)
 
     storage[array_key] = [array_descriptor, array_value]
     self
   end
 
   def update(key, descriptor, value)
+    raise InvalidAddition.new("the provided descriptor cannot be nil") if descriptor.nil?
     storage[key] = [descriptor, value]
   end
 
-  def each(&block)
+  def each
     storage.each do |key, (descriptor, value)|
-      block.call key, descriptor, value
+      yield key, descriptor, value
     end
   end
 
   private
 
   def key_exists?(key)
-    storage.has_key?(key)
+    storage.key?(key)
   end
-  
+
   def descriptor_exists?(descriptor)
-    storage.values.map{|arr| arr[0] }.include?(descriptor)
+    storage.values.map{|arr| arr.fetch(0) }.include?(descriptor)
   end
-  
+
   def value_exists?(value)
-    storage.values.map{|arr| arr[1] }.include?(value)
+    storage.values.map{|arr| arr.fetch(1) }.include?(value)
   end
 
   def with_interest(interest)
