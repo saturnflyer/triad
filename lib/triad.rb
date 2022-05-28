@@ -38,6 +38,7 @@ class Triad
     end
   end
 
+  # Add new entries to the object
   def <<(array)
     raise InvalidAddition.new("your array length must be 3") if array.length != 3
     array_key = array.fetch(0)
@@ -52,6 +53,7 @@ class Triad
     self
   end
 
+  # Alter the descriptor and value in-place for the given key
   def update(key, descriptor, value)
     raise InvalidAddition.new("the provided descriptor cannot be nil") if descriptor.nil?
     storage[key] = [descriptor, value]
