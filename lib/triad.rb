@@ -41,9 +41,11 @@ class Triad
   def <<(array)
     raise InvalidAddition.new("your array length must be 3") if array.length != 3
     array_key = array.fetch(0)
+    raise InvalidAddition.new("the provided key must be a Symbol") unless array_key.is_a?(Symbol)
     raise InvalidAddition.new("the provided key already exists") if key_exists?(array_key)
 
     array_descriptor = array.fetch(1)
+    raise InvalidAddition.new("the provided descriptor must be a String") unless array_descriptor.is_a?(String)
     array_value =      array.fetch(2)
 
     storage[array_key] = [array_descriptor, array_value]

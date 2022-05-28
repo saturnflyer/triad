@@ -33,6 +33,20 @@ describe Triad, '#<<' do
     triad << [:key, 'Descriptor', object]
     assert_equal [object], triad.values(:key)
   end
+
+  it "rejects keys that are not Symbols" do
+    error = assert_raises(Triad::InvalidAddition){
+      triad << ["key", "Descriptor", Object.new]
+    }
+    assert_match(/must be a Symbol/, error.message)
+  end
+
+  it "rejects descriptors that are not Strings" do
+    error = assert_raises(Triad::InvalidAddition){
+      triad << [:key, :Descriptor, Object.new]
+    }
+    assert_match(/must be a String/, error.message)
+  end
 end
 
 describe Triad, '#update' do
