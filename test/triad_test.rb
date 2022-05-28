@@ -1,8 +1,6 @@
 require_relative 'test_helper'
 
 describe Triad, '#<<' do
-  cover 'Triad*'
-
   let(:triad){ Triad.new }
 
   it 'shovels 3 item arrays' do
