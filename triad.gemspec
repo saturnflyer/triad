@@ -10,10 +10,10 @@ Gem::Specification.new do |spec|
   spec.email         = ["jim@saturnflyer.com"]
   spec.description   = %q{Triad allows you to access data from keys, descriptors, and values}
   spec.summary       = %q{Manage a collection with 3 data points}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/saturnflyer/triad"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = Dir['lib/**/*'] + %w[ Gemfile LICENSE.txt README.md Rakefile triad.gemspec test/triad_test.rb ]
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
