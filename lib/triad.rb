@@ -14,6 +14,7 @@ class Triad
   attr_reader :storage
   private :storage
 
+  # Return the keys for a given descriptor or value
   def keys(arg=nil)
     if arg == nil
       storage.keys
@@ -22,6 +23,7 @@ class Triad
     end
   end
 
+  # Return the descriptors for a given key or value
   def descriptors(arg=nil)
     if arg.nil?
       storage.map{|_,(descriptor,_)| descriptor }
@@ -30,6 +32,7 @@ class Triad
     end
   end
 
+  # Return the values for a given key or descriptor
   def values(arg=:__no_argument_given__)
     if arg == :__no_argument_given__
       storage.map{|_,(_,value)| value }.uniq
