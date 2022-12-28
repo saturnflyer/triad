@@ -1,9 +1,9 @@
-require 'simplecov'
+require "simplecov"
 
-require 'minitest/autorun'
+require "minitest/autorun"
 
 SimpleCov.start do
-  add_filter 'version.rb'
-  add_filter 'test'
+  add_filter "version.rb"
+  add_filter "test"
 end
-require 'triad'
+require "triad"

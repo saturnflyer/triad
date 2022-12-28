@@ -5,6 +5,7 @@ class Triad
   include Enumerable
 
   class InvalidAddition < StandardError; end
+
   class ItemNotPresent < StandardError; end
 
   # stored as {key => ['Descriptor', value]}
@@ -15,29 +16,29 @@ class Triad
   private :storage
 
   # Return the keys for a given descriptor or value
-  def keys(arg=nil)
-    if arg == nil
+  def keys(arg = nil)
+    if arg.nil?
       storage.keys
     else
-      with_interest(arg).map{|key, _, _| key }
+      with_interest(arg).map { |key, _, _| key }
     end
   end
 
   # Return the descriptors for a given key or value
-  def descriptors(arg=nil)
+  def descriptors(arg = nil)
     if arg.nil?
-      storage.map{|_,(descriptor,_)| descriptor }
+      storage.map { |_, (descriptor, _)| descriptor }
     else
-      with_interest(arg).map{|_, descriptor, _| descriptor }
+      with_interest(arg).map { |_, descriptor, _| descriptor }
     end
   end
 
   # Return the values for a given key or descriptor
-  def values(arg=:__no_argument_given__)
+  def values(arg = :__no_argument_given__)
     if arg == :__no_argument_given__
-      storage.map{|_,(_,value)| value }.uniq
+      storage.map { |_, (_, value)| value }.uniq
     else
-      with_interest(arg).map{|_, _, value| value }
+      with_interest(arg).map { |_, _, value| value }
     end
   end
 
@@ -50,7 +51,7 @@ class Triad
 
     array_descriptor = array.fetch(1)
     raise InvalidAddition.new("the provided descriptor must be a String") unless array_descriptor.is_a?(String)
-    array_value =      array.fetch(2)
+    array_value = array.fetch(2)
 
     storage[array_key] = [array_descriptor, array_value]
     self
@@ -75,24 +76,26 @@ class Triad
   end
 
   def descriptor_exists?(descriptor)
-    storage.values.map{|arr| arr.fetch(0) }.include?(descriptor)
+    storage.values.map { |arr| arr.fetch(0) }.include?(descriptor)
   end
 
   def value_exists?(value)
-    storage.values.map{|arr| arr.fetch(1) }.include?(value)
+    storage.values.map { |arr| arr.fetch(1) }.include?(value)
   end
 
   def with_interest(interest)
-    position = case
-              when key_exists?(interest)        then 0
-              when descriptor_exists?(interest) then 1
-              when value_exists?(interest)      then 2
-              else
-                raise ItemNotPresent.new
-              end
+    position = if key_exists?(interest)
+      0
+    elsif descriptor_exists?(interest)
+      1
+    elsif value_exists?(interest)
+      2
+    else
+      raise ItemNotPresent.new
+    end
 
-    storage.select{|key, array|
+    storage.select { |key, array|
       [key, *array].fetch(position) == interest
-    }.map{|key, array| [key, *array] }
+    }.map { |key, array| [key, *array] }
   end
 end
