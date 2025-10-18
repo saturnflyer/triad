@@ -10,7 +10,7 @@ Rake::TestTask.new do |t|
 end
 
 # Configure Reissue for automated versioning and changelog management
-require "reissue"
+require "reissue/gem"
 
 Reissue::Task.create :reissue do |task|
   task.version_file = "lib/triad/version.rb"
